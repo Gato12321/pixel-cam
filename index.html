@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0f0f23">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PixelCam">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Real-time pixel art camera. 11 retro palettes. Share to TikTok, Instagram, Twitter.">
+  <meta property="og:title" content="PixelCam - Real-time Pixel Art Camera">
+  <meta property="og:description" content="Turn your camera into retro pixel art. 11 palettes, record & share.">
+  <meta property="og:type" content="website">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>PixelCam ★ Real-time Pixel Art Camera</title>
+</head>
+<body>
+  <!-- Start screen: requires user gesture for iOS camera access -->
+  <div id="start-screen" class="screen">
+    <div class="title-block">
+      <h1 class="logo">★ PIXEL<br>CAM</h1>
+      <p class="tagline">REAL-TIME RETRO CAMERA</p>
+    </div>
+    <div class="palette-preview">
+      <div class="swatch" style="background:#0f380f"></div>
+      <div class="swatch" style="background:#306230"></div>
+      <div class="swatch" style="background:#8bac0f"></div>
+      <div class="swatch" style="background:#9bbc0f"></div>
+    </div>
+    <button id="start-btn" class="start-button">PRESS START</button>
+    <p class="hint">▼ タップしてカメラを起動 ▼</p>
+    <div class="credits">11 PALETTES ★ RECORD ★ SHARE</div>
+  </div>
+
+  <!-- Main screen: camera + controls -->
+  <div id="main-screen" class="screen hidden">
+    <div class="status-bar">
+      <span class="status-item">★ PIXEL CAM</span>
+      <span class="status-item" id="aspect-label">9:16</span>
+      <span class="status-item" id="rec-indicator">● REC</span>
+      <span class="status-item" id="fx-indicator">---</span>
+    </div>
+
+    <div id="camera-view">
+      <canvas id="display"></canvas>
+      <video id="video" autoplay playsinline muted></video>
+      <div id="flash"></div>
+      <div id="crt-overlay"></div>
+    </div>
+
+    <div class="palette-bar">
+      <button class="palette-arrow" id="dpad-left">◀</button>
+      <div class="palette-name" id="palette-label">Game Boy</div>
+      <button class="palette-arrow" id="dpad-right">▶</button>
+    </div>
+
+    <div class="controls">
+      <div class="dpad">
+        <button class="dpad-btn dpad-up-btn" id="dpad-up">▲</button>
+        <div class="dpad-middle">
+          <div class="size-label" id="size-label">96PX</div>
+        </div>
+        <button class="dpad-btn dpad-down-btn" id="dpad-down">▼</button>
+      </div>
+
+      <div class="menu-btns">
+        <button class="menu-btn" id="btn-select">SELECT<br><span>ASPECT</span></button>
+        <button class="menu-btn" id="btn-start">START<br><span>FLIP</span></button>
+        <button class="menu-btn" id="btn-fx">FX<br><span>CRT</span></button>
+      </div>
+
+      <div class="action-btns">
+        <button class="action-btn btn-b" id="btn-b">B<br><span>REC</span></button>
+        <button class="action-btn btn-a" id="btn-a">A<br><span>PHOTO</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview screen after photo/video -->
+  <div id="preview-screen" class="screen hidden">
+    <div class="preview-header">
+      <button class="icon-btn" id="preview-close">✕</button>
+      <span class="preview-title">★ PREVIEW</span>
+    </div>
+    <div id="preview-media" class="preview-media"></div>
+    <div class="preview-actions">
+      <button class="big-btn" id="preview-share">SHARE / SAVE</button>
+    </div>
+  </div>
+
+  <!-- Error screen -->
+  <div id="error-screen" class="screen hidden">
+    <div class="error-box">
+      <h2>✕ ERROR</h2>
+      <p id="error-msg"></p>
+      <button class="start-button" onclick="location.reload()">RETRY</button>
+    </div>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

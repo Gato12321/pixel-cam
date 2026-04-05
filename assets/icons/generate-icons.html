@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head><title>Icon Generator</title></head>
+<body>
+<canvas id="c192" width="192" height="192"></canvas>
+<canvas id="c512" width="512" height="512"></canvas>
+<canvas id="cmask" width="512" height="512"></canvas>
+<script>
+function drawIcon(canvas, maskable=false) {
+  const ctx = canvas.getContext('2d');
+  const s = canvas.width;
+  const pad = maskable ? s * 0.15 : 0;
+  // BG
+  ctx.fillStyle = '#0f0f23';
+  ctx.fillRect(0, 0, s, s);
+  // Game Boy green frame
+  const inner = s - pad * 2;
+  const px = pad, py = pad;
+  // Draw pixel camera: Game Boy silhouette
+  const gridSize = 12;
+  const cellSize = inner / gridSize;
+  // 12x12 pixel art of a camera
+  const art = [
+    '............',
+    '...XXXXXX...',
+    '..XGGGGGGX..',
+    '.XGKGGGGKGX.',
+    '.XGGKKKKGGX.',
+    '.XGGKRRKGGX.',
+    '.XGGKKKKGGX.',
+    '.XGKGGGGKGX.',
+    '..XGGGGGGX..',
+    '...XXXXXX...',
+    '............',
+    '............',
+  ];
+  const colors = { X: '#9bbc0f', G: '#0f380f', K: '#306230', R: '#ff0088', '.': null };
+  for (let y = 0; y < 12; y++) {
+    for (let x = 0; x < 12; x++) {
+      const c = colors[art[y][x]];
+      if (c) {
+        ctx.fillStyle = c;
+        ctx.fillRect(px + x * cellSize, py + y * cellSize, cellSize + 0.5, cellSize + 0.5);
+      }
+    }
+  }
+}
+drawIcon(document.getElementById('c192'));
+drawIcon(document.getElementById('c512'));
+drawIcon(document.getElementById('cmask'), true);
+
+// Download
+function dl(id, name) {
+  const c = document.getElementById(id);
+  c.toBlob(b => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b);
+    a.download = name;
+    a.click();
+  });
+}
+document.body.insertAdjacentHTML('beforeend', `
+  <br><button onclick="dl('c192','icon-192.png')">DL 192</button>
+  <button onclick="dl('c512','icon-512.png')">DL 512</button>
+  <button onclick="dl('cmask','icon-512-maskable.png')">DL mask</button>
+`);
+</script>
+</body>
+</html>
