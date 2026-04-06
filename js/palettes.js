@@ -55,7 +55,7 @@ export const PALETTES = {
   ],
 };
 
-export const PALETTE_NAMES = Object.keys(PALETTES);
+export const PALETTE_NAMES = ["Original", ...Object.keys(PALETTES)];
 
 // Bayer 8x8 matrix for ordered dithering (normalized 0-1)
 export const BAYER_8x8 = [

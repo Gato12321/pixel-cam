@@ -14,8 +14,13 @@ export class PixelProcessor {
   }
 
   setPalette(name) {
-    if (!PALETTES[name]) return;
     this.paletteName = name;
+    if (name === 'Original') {
+      this.palette = null;
+      this.lut = null;
+      return;
+    }
+    if (!PALETTES[name]) return;
     this.palette = PALETTES[name];
     this._buildLUT();
   }
@@ -61,6 +66,9 @@ export class PixelProcessor {
 
   // Process ImageData in-place: pixelate using current palette
   process(imageData) {
+    // Original mode: no color mapping, just pass through (pixelation is done by canvas downscale)
+    if (!this.palette || !this.lut) return imageData;
+
     const data = imageData.data;
     const w = imageData.width;
     const h = imageData.height;
