@@ -563,6 +563,97 @@ body {
   color: var(--bg-dark);
 }
 
+/* ============= PICKER MENU (shared) ============= */
+
+.picker-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.picker-panel {
+  width: 90%;
+  max-width: 360px;
+  background: var(--bg-panel);
+  border: 2px solid var(--gb-green);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.picker-title {
+  font-size: 10px;
+  color: var(--gb-green);
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 4px 0 8px;
+}
+
+.picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.res-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 8px;
+  background: var(--bg-elev);
+  border: 2px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.1s, background 0.1s;
+}
+.res-option:active {
+  border-color: var(--gb-green);
+  background: rgba(155,188,15,0.15);
+}
+
+.res-num {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 16px;
+  color: var(--gb-green);
+}
+
+.res-desc {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+/* Last item (7th) spans remaining space */
+.picker-grid .res-option:last-child {
+  grid-column: span 1;
+}
+
+.picker-close {
+  margin-top: 4px;
+  padding: 14px;
+  background: transparent;
+  border: 2px solid var(--text-dim);
+  color: var(--text-dim);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-align: center;
+}
+.picker-close:active {
+  border-color: var(--text);
+  color: var(--text);
+}
+
 /* ============= SAVE MENU ============= */
 
 .save-menu {

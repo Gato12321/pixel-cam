@@ -179,14 +179,22 @@ function changePalette(dir) {
   updatePaletteLabel();
 }
 
-function cycleResolution() {
-  const sizes = [32, 48, 64, 96, 128, 160];
-  let idx = sizes.indexOf(state.gridSize);
-  if (idx === -1) idx = 2;
-  idx = (idx + 1) % sizes.length;
-  state.gridSize = sizes[idx];
+const RES_OPTIONS = [16, 32, 48, 64, 96, 128, 160];
+
+function openResMenu() {
+  const menu = document.getElementById('res-menu');
+  menu.classList.remove('hidden');
+}
+
+function closeResMenu() {
+  document.getElementById('res-menu').classList.add('hidden');
+}
+
+function selectResolution(size) {
+  state.gridSize = size;
   sizeCanvases();
   updateSizeLabel();
+  closeResMenu();
 }
 
 function cycleAspect() {
@@ -428,7 +436,11 @@ function bindControls() {
   document.getElementById('pal-right').addEventListener('click', () => changePalette(1));
 
   // Settings
-  document.getElementById('btn-res').addEventListener('click', cycleResolution);
+  document.getElementById('btn-res').addEventListener('click', openResMenu);
+  document.getElementById('res-menu-close').addEventListener('click', closeResMenu);
+  document.querySelectorAll('.res-option').forEach(btn => {
+    btn.addEventListener('click', () => selectResolution(parseInt(btn.dataset.size)));
+  });
   document.getElementById('btn-aspect').addEventListener('click', cycleAspect);
   document.getElementById('btn-fx').addEventListener('click', toggleCRT);
   document.getElementById('btn-dither').addEventListener('click', toggleDithering);
