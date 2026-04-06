@@ -181,20 +181,23 @@ function changePalette(dir) {
 
 const RES_OPTIONS = [16, 32, 48, 64, 96, 128, 160];
 
-function openResMenu() {
-  const menu = document.getElementById('res-menu');
-  menu.classList.remove('hidden');
-}
-
-function closeResMenu() {
-  document.getElementById('res-menu').classList.add('hidden');
+function toggleResPopup() {
+  const popup = document.getElementById('res-popup');
+  const isOpen = !popup.classList.contains('hidden');
+  popup.classList.toggle('hidden');
+  if (!isOpen) {
+    // Highlight current size
+    document.querySelectorAll('.res-opt').forEach(b => {
+      b.classList.toggle('selected', parseInt(b.dataset.size) === state.gridSize);
+    });
+  }
 }
 
 function selectResolution(size) {
   state.gridSize = size;
   sizeCanvases();
   updateSizeLabel();
-  closeResMenu();
+  document.getElementById('res-popup').classList.add('hidden');
 }
 
 function cycleAspect() {
@@ -436,9 +439,8 @@ function bindControls() {
   document.getElementById('pal-right').addEventListener('click', () => changePalette(1));
 
   // Settings
-  document.getElementById('btn-res').addEventListener('click', openResMenu);
-  document.getElementById('res-menu-close').addEventListener('click', closeResMenu);
-  document.querySelectorAll('.res-option').forEach(btn => {
+  document.getElementById('btn-res').addEventListener('click', toggleResPopup);
+  document.querySelectorAll('.res-opt').forEach(btn => {
     btn.addEventListener('click', () => selectResolution(parseInt(btn.dataset.size)));
   });
   document.getElementById('btn-aspect').addEventListener('click', cycleAspect);

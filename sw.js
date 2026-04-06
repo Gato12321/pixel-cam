@@ -1,5 +1,5 @@
 // PixelCam Service Worker — network-first with cache fallback
-const CACHE_NAME = 'pixelcam-v4';
+const CACHE_NAME = 'pixelcam-v5';
 const CORE_ASSETS = [
   './',
   './index.html',

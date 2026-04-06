@@ -78,6 +78,20 @@
 
     <!-- Control bar -->
     <div class="control-bar">
+      <!-- Resolution popup -->
+      <div id="res-popup" class="res-popup hidden">
+        <div class="res-popup-grid">
+          <button class="res-opt" data-size="16">16</button>
+          <button class="res-opt" data-size="32">32</button>
+          <button class="res-opt" data-size="48">48</button>
+          <button class="res-opt" data-size="64">64</button>
+          <button class="res-opt" data-size="96">96</button>
+          <button class="res-opt" data-size="128">128</button>
+          <button class="res-opt" data-size="160">160</button>
+          <button class="res-opt" data-size="192">192</button>
+          <button class="res-opt" data-size="256">256</button>
+        </div>
+      </div>
       <!-- Top row: settings -->
       <div class="settings-row">
         <button class="setting-btn" id="btn-res">
@@ -140,23 +154,6 @@
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         SHARE
       </button>
-    </div>
-
-    <!-- Resolution picker menu -->
-    <div id="res-menu" class="picker-menu hidden">
-      <div class="picker-panel">
-        <div class="picker-title">PIXEL SIZE</div>
-        <div class="picker-grid">
-          <button class="res-option" data-size="16"><span class="res-num">16</span><span class="res-desc">Ultra Retro</span></button>
-          <button class="res-option" data-size="32"><span class="res-num">32</span><span class="res-desc">Game Boy</span></button>
-          <button class="res-option" data-size="48"><span class="res-num">48</span><span class="res-desc">Low-fi</span></button>
-          <button class="res-option" data-size="64"><span class="res-num">64</span><span class="res-desc">Classic</span></button>
-          <button class="res-option" data-size="96"><span class="res-num">96</span><span class="res-desc">Standard</span></button>
-          <button class="res-option" data-size="128"><span class="res-num">128</span><span class="res-desc">HD Pixel</span></button>
-          <button class="res-option" data-size="160"><span class="res-num">160</span><span class="res-desc">Fine</span></button>
-        </div>
-        <button class="picker-close" id="res-menu-close">CANCEL</button>
-      </div>
     </div>
 
     <!-- Save method menu -->
