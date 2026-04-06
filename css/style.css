@@ -1,4 +1,4 @@
-/* PixelCam — Retro Game Console UI */
+/* PixelCam — Redesigned for mobile usability */
 
 * {
   margin: 0;
@@ -17,10 +17,10 @@
   --gb-dark: #0f380f;
   --gb-mid: #306230;
   --accent-pink: #ff0088;
+  --accent-red: #ff3344;
   --accent-cyan: #00e4d8;
-  --accent-yellow: #fff1e8;
   --text: #e0e0ff;
-  --text-dim: #8888aa;
+  --text-dim: #6668aa;
   --border: #2a2a4a;
 }
 
@@ -50,12 +50,9 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--bg-dark);
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }
 
 /* ============= START SCREEN ============= */
 
@@ -67,18 +64,14 @@ body {
   padding: 24px;
 }
 
-.title-block {
-  margin-bottom: 32px;
-}
+.title-block { margin-bottom: 32px; }
 
 .logo {
-  font-size: 42px;
+  font-size: 48px;
   line-height: 1.3;
   color: var(--gb-green);
-  text-shadow:
-    4px 4px 0 var(--gb-dark),
-    8px 8px 0 rgba(0,0,0,0.3);
-  letter-spacing: 2px;
+  text-shadow: 4px 4px 0 var(--gb-dark), 8px 8px 0 rgba(0,0,0,0.3);
+  letter-spacing: 4px;
   margin-bottom: 16px;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -91,41 +84,37 @@ body {
 .tagline {
   font-size: 9px;
   color: var(--accent-cyan);
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 .palette-preview {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   margin-bottom: 40px;
 }
 
 .swatch {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border: 2px solid var(--text);
-  image-rendering: pixelated;
 }
 
 .start-button {
   font-family: 'Press Start 2P', monospace;
-  font-size: 14px;
-  padding: 16px 28px;
+  font-size: 16px;
+  padding: 20px 36px;
   background: var(--gb-green);
   color: var(--gb-dark);
   border: none;
-  border-radius: 0;
-  box-shadow:
-    0 4px 0 var(--gb-dark),
-    0 8px 0 rgba(0,0,0,0.4);
+  box-shadow: 0 6px 0 var(--gb-dark), 0 10px 0 rgba(0,0,0,0.4);
   cursor: pointer;
   transition: transform 0.05s, box-shadow 0.05s;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   animation: blink-hint 1.2s ease-in-out infinite;
 }
 
 .start-button:active {
-  transform: translateY(4px);
+  transform: translateY(6px);
   box-shadow: 0 0 0 var(--gb-dark);
 }
 
@@ -135,10 +124,10 @@ body {
 }
 
 .hint {
-  margin-top: 20px;
+  margin-top: 24px;
   font-size: 8px;
   color: var(--text-dim);
-  animation: blink-hint 1.5s ease-in-out infinite;
+  letter-spacing: 1px;
 }
 
 .credits {
@@ -151,42 +140,9 @@ body {
 
 /* ============= MAIN SCREEN ============= */
 
-#main-screen {
-  padding: 0;
-}
+#main-screen { padding: 0; }
 
-.status-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background: var(--bg-panel);
-  border-bottom: 2px solid var(--gb-green);
-  font-size: 8px;
-  color: var(--gb-green);
-  min-height: 32px;
-  padding-top: calc(8px + env(safe-area-inset-top));
-}
-
-.status-item {
-  letter-spacing: 1px;
-}
-
-#rec-indicator {
-  color: var(--text-dim);
-  transition: color 0.1s;
-}
-
-#rec-indicator.active {
-  color: var(--accent-pink);
-  animation: rec-blink 0.8s ease-in-out infinite;
-}
-
-@keyframes rec-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
+/* Camera view */
 #camera-view {
   flex: 1;
   position: relative;
@@ -223,7 +179,6 @@ body {
   pointer-events: none;
   transition: opacity 0.05s;
 }
-
 #flash.active {
   opacity: 0.8;
   transition: opacity 0.2s;
@@ -241,221 +196,314 @@ body {
   transition: opacity 0.2s;
   mix-blend-mode: multiply;
 }
+#crt-overlay.active { opacity: 1; }
 
-#crt-overlay.active {
-  opacity: 1;
+/* Floating top bar */
+.floating-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  padding-top: calc(8px + env(safe-area-inset-top));
+  pointer-events: none;
+  z-index: 10;
 }
 
-/* Palette name bar */
+.top-badge {
+  background: rgba(0,0,0,0.6);
+  color: var(--gb-green);
+  font-size: 8px;
+  padding: 4px 8px;
+  letter-spacing: 1px;
+  border: 1px solid rgba(155,188,15,0.3);
+}
+
+#rec-indicator {
+  display: none;
+  color: var(--accent-red);
+  border-color: rgba(255,51,68,0.4);
+  animation: rec-blink 0.8s ease-in-out infinite;
+}
+#rec-indicator.active { display: inline-block; }
+
+#timer-display {
+  display: none;
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+}
+#timer-display.active { display: inline-block; }
+
+@keyframes rec-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Floating flip camera button */
+.floating-btn {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: transform 0.15s, background 0.15s;
+}
+.floating-btn:active {
+  transform: scale(0.9);
+  background: rgba(255,255,255,0.2);
+}
+
+.flip-btn {
+  top: calc(12px + env(safe-area-inset-top));
+  right: 12px;
+}
+
+/* ============= PALETTE BAR ============= */
+
 .palette-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   background: var(--bg-panel);
   border-top: 2px solid var(--border);
-  border-bottom: 2px solid var(--border);
-  padding: 6px 12px;
+  padding: 2px 8px;
+  min-height: 44px;
 }
 
-.palette-arrow {
-  width: 36px;
-  height: 28px;
-  background: var(--bg-elev);
+.pal-arrow {
+  width: 44px;
+  height: 40px;
+  background: transparent;
   border: 2px solid var(--gb-green);
   color: var(--gb-green);
-  font-size: 14px;
-  font-family: 'Press Start 2P', monospace;
   cursor: pointer;
-  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
-
-.palette-arrow:active {
+.pal-arrow:active {
   background: var(--gb-green);
   color: var(--gb-dark);
 }
 
-.palette-name {
+.pal-name {
   font-size: 11px;
   color: var(--gb-green);
   letter-spacing: 2px;
   text-align: center;
   flex: 1;
   text-shadow: 2px 2px 0 var(--gb-dark);
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-/* Controls */
-.controls {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-areas: "dpad menu actions";
-  gap: 12px;
-  padding: 16px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+/* ============= CONTROL BAR ============= */
+
+.control-bar {
   background: var(--bg-panel);
-  align-items: center;
+  border-top: 2px solid var(--border);
+  padding: 8px 12px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.dpad {
-  grid-area: dpad;
+/* Settings row */
+.settings-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.setting-btn {
+  flex: 1;
+  max-width: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
-}
-
-.dpad-btn {
-  width: 48px;
-  height: 34px;
+  gap: 3px;
+  padding: 6px 4px;
   background: var(--bg-elev);
-  border: 2px solid var(--text-dim);
-  color: var(--text);
-  font-size: 14px;
-  font-family: 'Press Start 2P', monospace;
+  border: 2px solid var(--border);
+  color: var(--text-dim);
   cursor: pointer;
-  border-radius: 0;
+  transition: color 0.1s, border-color 0.1s;
 }
-
-.dpad-btn:active {
-  background: var(--gb-green);
-  color: var(--gb-dark);
+.setting-btn:active,
+.setting-btn.active {
+  color: var(--gb-green);
   border-color: var(--gb-green);
 }
 
-.dpad-middle {
-  background: var(--bg-elev);
-  border-left: 2px solid var(--text-dim);
-  border-right: 2px solid var(--text-dim);
-  width: 48px;
+.setting-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
   height: 28px;
+}
+
+.setting-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Capture row */
+.capture-row {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 16px;
 }
 
-.size-label {
-  font-size: 7px;
-  color: var(--gb-green);
-  letter-spacing: 1px;
-}
-
-.menu-btns {
-  grid-area: menu;
+/* Mode selector */
+.mode-selector {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: center;
+  gap: 0;
+  border: 2px solid var(--border);
+  overflow: hidden;
 }
 
-.menu-btn {
-  width: 100%;
-  max-width: 90px;
-  padding: 6px;
+.mode-btn {
+  padding: 10px 10px;
   background: var(--bg-elev);
-  border: 2px solid var(--text-dim);
-  color: var(--text);
+  border: none;
+  border-right: 1px solid var(--border);
+  color: var(--text-dim);
   font-family: 'Press Start 2P', monospace;
   font-size: 7px;
-  line-height: 1.5;
   cursor: pointer;
-  border-radius: 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  transition: background 0.1s, color 0.1s;
+}
+.mode-btn:last-child { border-right: none; }
+.mode-btn.active {
+  background: var(--gb-green);
+  color: var(--gb-dark);
+}
+.mode-btn:active {
+  background: var(--gb-mid);
+  color: #fff;
 }
 
-.menu-btn span {
-  font-size: 6px;
-  color: var(--text-dim);
-}
-
-.menu-btn:active {
-  background: var(--accent-cyan);
-  color: var(--bg-dark);
-  border-color: var(--accent-cyan);
-}
-
-.menu-btn:active span { color: var(--bg-dark); }
-
-.action-btns {
-  grid-area: actions;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding-top: 10px;
-}
-
-.action-btn {
-  width: 58px;
-  height: 58px;
+/* Capture button */
+.capture-btn {
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  border: 3px solid;
-  color: white;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 18px;
+  border: none;
+  background: transparent;
   cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: transform 0.08s;
+}
+.capture-btn:active {
+  transform: scale(0.92);
+}
+
+.capture-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid #fff;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 4px;
+}
+
+.capture-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #fff;
+  transition: background 0.15s, border-radius 0.15s;
+}
+
+/* Video mode: red inner */
+.capture-btn.mode-video .capture-inner {
+  background: var(--accent-red);
+}
+/* Recording state: square inner */
+.capture-btn.recording .capture-inner {
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  background: var(--accent-red);
+}
+.capture-btn.recording .capture-ring {
+  border-color: var(--accent-red);
   padding: 0;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.5);
-  transition: transform 0.05s, box-shadow 0.05s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.action-btn span {
-  font-size: 6px;
-  margin-top: 2px;
-  letter-spacing: 1px;
+/* Timelapse mode: cyan inner */
+.capture-btn.mode-timelapse .capture-inner {
+  background: var(--accent-cyan);
 }
-
-.action-btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 rgba(0,0,0,0.5);
+.capture-btn.mode-timelapse.recording .capture-inner {
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  background: var(--accent-cyan);
 }
-
-.btn-a {
-  background: var(--accent-pink);
-  border-color: #aa0055;
-}
-
-.btn-b {
-  background: var(--accent-yellow);
-  color: #660044;
-  border-color: #aa8833;
+.capture-btn.mode-timelapse.recording .capture-ring {
+  border-color: var(--accent-cyan);
 }
 
 /* ============= PREVIEW SCREEN ============= */
 
 #preview-screen {
-  background: rgba(0,0,0,0.95);
+  background: var(--bg-dark);
   z-index: 100;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .preview-header {
   display: flex;
   align-items: center;
-  padding: 12px;
+  padding: 12px 16px;
+  padding-top: calc(12px + env(safe-area-inset-top));
   background: var(--bg-panel);
   border-bottom: 2px solid var(--gb-green);
   gap: 12px;
+  min-height: 56px;
 }
 
-.icon-btn {
-  width: 36px;
-  height: 36px;
-  background: var(--bg-elev);
+.preview-back {
+  width: 44px;
+  height: 44px;
+  background: transparent;
   border: 2px solid var(--gb-green);
   color: var(--gb-green);
-  font-family: 'Press Start 2P', monospace;
-  font-size: 14px;
   cursor: pointer;
-  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.preview-back:active { background: var(--gb-green); color: var(--gb-dark); }
 
 .preview-title {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--gb-green);
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   flex: 1;
 }
 
@@ -477,28 +525,42 @@ body {
 }
 
 .preview-actions {
+  display: flex;
+  gap: 12px;
   padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
   background: var(--bg-panel);
   border-top: 2px solid var(--border);
 }
 
-.big-btn {
-  width: 100%;
-  padding: 18px;
-  background: var(--gb-green);
+.save-btn, .share-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 12px;
   border: none;
-  color: var(--gb-dark);
   font-family: 'Press Start 2P', monospace;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 2px;
   cursor: pointer;
-  border-radius: 0;
-  box-shadow: 0 4px 0 var(--gb-dark);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+  transition: transform 0.05s, box-shadow 0.05s;
+}
+.save-btn:active, .share-btn:active {
+  transform: translateY(4px);
+  box-shadow: none;
 }
 
-.big-btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 var(--gb-dark);
+.save-btn {
+  background: var(--gb-green);
+  color: var(--gb-dark);
+}
+
+.share-btn {
+  background: var(--accent-cyan);
+  color: var(--bg-dark);
 }
 
 /* ============= ERROR SCREEN ============= */
@@ -513,39 +575,41 @@ body {
 .error-box {
   background: var(--bg-panel);
   border: 3px solid var(--accent-pink);
-  padding: 24px;
+  padding: 28px;
   text-align: center;
-  max-width: 320px;
+  max-width: 340px;
 }
-
 .error-box h2 {
-  font-size: 18px;
+  font-size: 20px;
   color: var(--accent-pink);
   margin-bottom: 16px;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
-
 .error-box p {
   font-size: 10px;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  line-height: 1.8;
+  margin-bottom: 24px;
   color: var(--text);
 }
 
 /* ============= RESPONSIVE ============= */
 
 @media (min-width: 600px) {
-  .logo { font-size: 56px; }
-  .action-btn { width: 70px; height: 70px; font-size: 22px; }
-  .dpad-btn { width: 54px; height: 38px; }
-  .dpad-middle { width: 54px; height: 32px; }
+  .logo { font-size: 64px; }
+  .capture-btn { width: 84px; height: 84px; }
+  .setting-btn { max-width: 100px; }
+  .mode-btn { padding: 12px 14px; font-size: 8px; }
 }
 
-@media (max-height: 600px) {
-  .logo { font-size: 32px; }
+@media (max-height: 580px) {
+  .logo { font-size: 36px; }
   .title-block { margin-bottom: 16px; }
   .palette-preview { margin-bottom: 20px; }
-  .credits { bottom: 12px; }
-  .controls { padding: 8px; gap: 8px; }
-  .action-btn { width: 50px; height: 50px; font-size: 16px; }
+  .control-bar { padding: 6px 8px; gap: 6px; }
+  .capture-btn { width: 60px; height: 60px; }
+  .palette-bar { min-height: 36px; padding: 0 6px; }
+  .pal-arrow { width: 36px; height: 32px; }
+  .settings-row { gap: 4px; }
+  .setting-btn { padding: 4px 2px; }
+  .mode-btn { padding: 8px 8px; }
 }

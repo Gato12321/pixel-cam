@@ -18,13 +18,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
-  <title>PixelCam ★ Real-time Pixel Art Camera</title>
+  <title>PixelCam</title>
 </head>
 <body>
-  <!-- Start screen: requires user gesture for iOS camera access -->
+  <!-- Start screen -->
   <div id="start-screen" class="screen">
     <div class="title-block">
-      <h1 class="logo">★ PIXEL<br>CAM</h1>
+      <h1 class="logo">PIXEL<br>CAM</h1>
       <p class="tagline">REAL-TIME RETRO CAMERA</p>
     </div>
     <div class="palette-preview">
@@ -34,70 +34,119 @@
       <div class="swatch" style="background:#9bbc0f"></div>
     </div>
     <button id="start-btn" class="start-button">PRESS START</button>
-    <p class="hint">▼ タップしてカメラを起動 ▼</p>
-    <div class="credits">11 PALETTES ★ RECORD ★ SHARE</div>
+    <p class="hint">TAP TO START CAMERA</p>
+    <div class="credits">11 PALETTES / VIDEO / TIMELAPSE / SHARE</div>
   </div>
 
-  <!-- Main screen: camera + controls -->
+  <!-- Main camera screen -->
   <div id="main-screen" class="screen hidden">
-    <div class="status-bar">
-      <span class="status-item">★ PIXEL CAM</span>
-      <span class="status-item" id="aspect-label">9:16</span>
-      <span class="status-item" id="rec-indicator">● REC</span>
-      <span class="status-item" id="fx-indicator">---</span>
-    </div>
-
+    <!-- Camera view area -->
     <div id="camera-view">
       <canvas id="display"></canvas>
       <video id="video" autoplay playsinline muted></video>
       <div id="flash"></div>
       <div id="crt-overlay"></div>
+
+      <!-- Floating top bar -->
+      <div class="floating-top">
+        <span class="top-badge" id="aspect-label">9:16</span>
+        <span class="top-badge" id="rec-indicator">REC</span>
+        <span class="top-badge" id="timer-display"></span>
+      </div>
+
+      <!-- Floating camera flip button -->
+      <button class="floating-btn flip-btn" id="btn-flip" aria-label="Flip camera">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 3h5v5"/>
+          <path d="M8 21H3v-5"/>
+          <path d="M21 3l-7 7"/>
+          <path d="M3 21l7-7"/>
+        </svg>
+      </button>
     </div>
 
+    <!-- Palette bar -->
     <div class="palette-bar">
-      <button class="palette-arrow" id="dpad-left">◀</button>
-      <div class="palette-name" id="palette-label">Game Boy</div>
-      <button class="palette-arrow" id="dpad-right">▶</button>
+      <button class="pal-arrow" id="pal-left" aria-label="Previous palette">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="pal-name" id="palette-label">Game Boy</div>
+      <button class="pal-arrow" id="pal-right" aria-label="Next palette">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
     </div>
 
-    <div class="controls">
-      <div class="dpad">
-        <button class="dpad-btn dpad-up-btn" id="dpad-up">▲</button>
-        <div class="dpad-middle">
-          <div class="size-label" id="size-label">96PX</div>
+    <!-- Control bar -->
+    <div class="control-bar">
+      <!-- Top row: settings -->
+      <div class="settings-row">
+        <button class="setting-btn" id="btn-res">
+          <span class="setting-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+          </span>
+          <span class="setting-label" id="size-label">96PX</span>
+        </button>
+        <button class="setting-btn" id="btn-aspect">
+          <span class="setting-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><rect x="6" y="7" width="5" height="10" rx="1" fill="currentColor" opacity="0.3"/></svg>
+          </span>
+          <span class="setting-label" id="aspect-btn-label">9:16</span>
+        </button>
+        <button class="setting-btn" id="btn-fx">
+          <span class="setting-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </span>
+          <span class="setting-label" id="fx-label">CRT</span>
+        </button>
+        <button class="setting-btn" id="btn-dither">
+          <span class="setting-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="6" cy="6" r="2"/><circle cx="14" cy="6" r="1.5" opacity="0.5"/><circle cx="10" cy="10" r="1.5" opacity="0.5"/><circle cx="18" cy="10" r="2"/><circle cx="6" cy="14" r="1.5" opacity="0.5"/><circle cx="14" cy="14" r="2"/><circle cx="10" cy="18" r="2"/><circle cx="18" cy="18" r="1.5" opacity="0.5"/></svg>
+          </span>
+          <span class="setting-label" id="dither-label">DITHR</span>
+        </button>
+      </div>
+
+      <!-- Bottom row: mode + capture -->
+      <div class="capture-row">
+        <div class="mode-selector">
+          <button class="mode-btn active" id="mode-photo" data-mode="photo">PHOTO</button>
+          <button class="mode-btn" id="mode-video" data-mode="video">VIDEO</button>
+          <button class="mode-btn" id="mode-tl" data-mode="timelapse">T-LAPSE</button>
         </div>
-        <button class="dpad-btn dpad-down-btn" id="dpad-down">▼</button>
-      </div>
-
-      <div class="menu-btns">
-        <button class="menu-btn" id="btn-select">SELECT<br><span>ASPECT</span></button>
-        <button class="menu-btn" id="btn-start">START<br><span>FLIP</span></button>
-        <button class="menu-btn" id="btn-fx">FX<br><span>CRT</span></button>
-      </div>
-
-      <div class="action-btns">
-        <button class="action-btn btn-b" id="btn-b">B<br><span>REC</span></button>
-        <button class="action-btn btn-a" id="btn-a">A<br><span>PHOTO</span></button>
+        <button class="capture-btn" id="btn-capture" aria-label="Capture">
+          <div class="capture-ring">
+            <div class="capture-inner" id="capture-inner"></div>
+          </div>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Preview screen after photo/video -->
+  <!-- Preview screen -->
   <div id="preview-screen" class="screen hidden">
     <div class="preview-header">
-      <button class="icon-btn" id="preview-close">✕</button>
-      <span class="preview-title">★ PREVIEW</span>
+      <button class="preview-back" id="preview-close">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <span class="preview-title">PREVIEW</span>
     </div>
     <div id="preview-media" class="preview-media"></div>
     <div class="preview-actions">
-      <button class="big-btn" id="preview-share">SHARE / SAVE</button>
+      <button class="save-btn" id="preview-save">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        SAVE
+      </button>
+      <button class="share-btn" id="preview-share">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        SHARE
+      </button>
     </div>
   </div>
 
   <!-- Error screen -->
   <div id="error-screen" class="screen hidden">
     <div class="error-box">
-      <h2>✕ ERROR</h2>
+      <h2>ERROR</h2>
       <p id="error-msg"></p>
       <button class="start-button" onclick="location.reload()">RETRY</button>
     </div>
