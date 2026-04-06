@@ -1,5 +1,5 @@
-// PixelCam Service Worker
-const CACHE_NAME = 'pixelcam-v1';
+// PixelCam Service Worker — network-first with cache fallback
+const CACHE_NAME = 'pixelcam-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -27,24 +27,18 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  const req = event.request;
-  if (req.method !== 'GET') return;
+  if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
 
-  // Cache-first for same-origin static assets
-  const url = new URL(req.url);
-  if (url.origin === self.location.origin) {
-    event.respondWith(
-      caches.match(req).then((cached) => {
-        if (cached) return cached;
-        return fetch(req).then((res) => {
-          // Cache successful responses
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(CACHE_NAME).then(c => c.put(req, clone));
-          }
-          return res;
-        }).catch(() => cached);
-      })
-    );
-  }
+  // Network-first: always try fresh, fall back to cache (offline support)
+  event.respondWith(
+    fetch(event.request).then((res) => {
+      if (res.ok) {
+        const clone = res.clone();
+        caches.open(CACHE_NAME).then(c => c.put(event.request, clone));
+      }
+      return res;
+    }).catch(() => caches.match(event.request))
+  );
 });
