@@ -180,7 +180,7 @@ function changePalette(dir) {
 }
 
 function cycleResolution() {
-  const sizes = [48, 64, 96, 128, 160];
+  const sizes = [32, 48, 64, 96, 128, 160];
   let idx = sizes.indexOf(state.gridSize);
   if (idx === -1) idx = 2;
   idx = (idx + 1) % sizes.length;

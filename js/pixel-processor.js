@@ -5,12 +5,11 @@ import { PALETTES, BAYER_8x8 } from './palettes.js';
 
 export class PixelProcessor {
   constructor() {
-    this.palette = PALETTES["Game Boy"];
-    this.paletteName = "Game Boy";
+    this.palette = null;
+    this.paletteName = "Original";
     this.dithering = "ordered"; // "none" | "ordered"
-    this.gridSize = 96; // target width in pixels for downscale
-    this.lut = null; // 32³ lookup table (8192 bytes) → palette index
-    this._buildLUT();
+    this.gridSize = 96;
+    this.lut = null;
   }
 
   setPalette(name) {
