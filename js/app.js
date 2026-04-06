@@ -359,9 +359,33 @@ function closePreview() {
   _previewBlob = null;
 }
 
-async function handleSave() {
+function handleSave() {
   if (!_previewBlob) return;
-  await saveToDevice(_previewBlob, _previewFilename);
+  // Show OS selection menu
+  document.getElementById('save-menu').classList.remove('hidden');
+}
+
+async function handleSaveMethod(method) {
+  document.getElementById('save-menu').classList.add('hidden');
+  if (!_previewBlob) return;
+  switch (method) {
+    case 'share':
+      // iOS: Web Share API → "Save Video" / "Save Image" in share sheet
+      await shareFile(_previewBlob, _previewFilename);
+      break;
+    case 'download':
+      // Android: <a download> saves to Downloads → appears in Gallery
+      await saveToDevice(_previewBlob, _previewFilename);
+      break;
+    case 'pc':
+      // PC: Direct download to Downloads folder
+      await saveToDevice(_previewBlob, _previewFilename);
+      break;
+  }
+}
+
+function closeSaveMenu() {
+  document.getElementById('save-menu').classList.add('hidden');
 }
 
 async function handleShare() {
@@ -421,6 +445,12 @@ function bindControls() {
   document.getElementById('preview-close').addEventListener('click', closePreview);
   document.getElementById('preview-save').addEventListener('click', handleSave);
   document.getElementById('preview-share').addEventListener('click', handleShare);
+
+  // Save menu options
+  document.querySelectorAll('.save-option').forEach(btn => {
+    btn.addEventListener('click', () => handleSaveMethod(btn.dataset.method));
+  });
+  document.getElementById('save-menu-close').addEventListener('click', closeSaveMenu);
 
   // Swipe palette on camera view
   let touchStartX = 0;

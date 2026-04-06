@@ -141,6 +141,41 @@
         SHARE
       </button>
     </div>
+
+    <!-- Save method menu -->
+    <div id="save-menu" class="save-menu hidden">
+      <div class="save-menu-panel">
+        <div class="save-menu-title">SAVE METHOD</div>
+        <button class="save-option" data-method="share">
+          <span class="save-option-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>
+          </span>
+          <span class="save-option-text">
+            <strong>iOS</strong>
+            <small>Share sheet from Photos app</small>
+          </span>
+        </button>
+        <button class="save-option" data-method="download">
+          <span class="save-option-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </span>
+          <span class="save-option-text">
+            <strong>Android</strong>
+            <small>Download to Gallery</small>
+          </span>
+        </button>
+        <button class="save-option" data-method="pc">
+          <span class="save-option-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </span>
+          <span class="save-option-text">
+            <strong>PC</strong>
+            <small>Download file</small>
+          </span>
+        </button>
+        <button class="save-menu-close" id="save-menu-close">CANCEL</button>
+      </div>
+    </div>
   </div>
 
   <!-- Error screen -->

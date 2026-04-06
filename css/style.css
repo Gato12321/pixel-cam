@@ -563,6 +563,102 @@ body {
   color: var(--bg-dark);
 }
 
+/* ============= SAVE MENU ============= */
+
+.save-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.save-menu-panel {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-panel);
+  border-top: 2px solid var(--gb-green);
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.save-menu-title {
+  font-size: 10px;
+  color: var(--gb-green);
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.save-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--bg-elev);
+  border: 2px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.1s, background 0.1s;
+  text-align: left;
+}
+.save-option:active {
+  border-color: var(--gb-green);
+  background: rgba(155,188,15,0.1);
+}
+
+.save-option-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  color: var(--gb-green);
+}
+
+.save-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.save-option-text strong {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--text);
+}
+.save-option-text small {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--text-dim);
+}
+
+.save-menu-close {
+  margin-top: 4px;
+  padding: 14px;
+  background: transparent;
+  border: 2px solid var(--text-dim);
+  color: var(--text-dim);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-align: center;
+}
+.save-menu-close:active {
+  border-color: var(--text);
+  color: var(--text);
+}
+
 /* ============= ERROR SCREEN ============= */
 
 #error-screen {
